@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CVE Search</title>
+</head>
+<body>
+    <h1>CVE Search</h1>
+    <form method="POST">
+        <input type="text" name="cve_id" placeholder="Enter CVE ID (e.g., CVE-1999-1015)" required>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if cve_info %}
+        <h2>CVE Information</h2>
+        {% if cve_info.error %}
+            <p>{{ cve_info.error }}</p>
+        {% else %}
+            <p><strong>CVE ID:</strong> {{ cve_info.ID }}</p>
+            <p><strong>Published:</strong> {{ cve_info.Published }}</p>
+            <p><strong>Access:</strong> Authentication: {{ cve_info.Access.authentication }}, Complexity: {{ cve_info.Access.complexity }}, Vector: {{ cve_info.Access.vector }}</p>
+            <p><strong>Impact:</strong> Availability: {{ cve_info.Impact.availability }}, Confidentiality: {{ cve_info.Impact.confidentiality }}, Integrity: {{ cve_info.Impact.integrity }}</p>
+            <p><strong>Bugtraq References:</strong> {{ cve_info.Bugtraq }}</p>
+            <p><strong>Summary:</strong> {{ cve_info.Summary }}</p>
+        {% endif %}
+    {% endif %}
+
+    <h2>CVE Data Table</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Environments</th>
+                <th>Attack Vectors</th>
+                <th>Prerequisites</th>
+                <th>Potential Outputs</th>
+                <th>TTPs</th>
+                <th>Access</th>
+                <th>Impact</th>
+                <th>Bugtraq</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in cve_df %}
+                <tr>
+                    <td>{{ row['Environments'] }}</td>
+                    <td>{{ row['Attack Vectors'] }}</td>
+                    <td>{{ row['Prerequisites'] }}</td>
+                    <td>{{ row['Potential Outputs'] }}</td>
+                    <td>{{ row['TTPs'] }}</td>
+                    <td>{{ row['Access'] }}</td>
+                    <td>{{ row['Impact'] }}</td>
+                    <td>{{ row['Bugtraq'] }}</td>
+                    <td>{{ row['Summary'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
